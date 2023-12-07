@@ -22,17 +22,20 @@ public class Movie {
     @Column(name = "id")
     private Long id;
 
-    @NotEmpty(message = "El titulo no puede  estar en blanco")
+
     @Column(name = "title")
+    @NotBlank
     private String title;
 
-    @NotEmpty(message = "El director no puede  estar en blanco")
+
     @Column(name = "director")
+    @NotBlank
     private String director;
 
-    @Min(value = 1, message = "El rating debe ser minimo de 1")
-    @Max(value = 5, message = "El rating debe ser maximo de 5")
+
     @Column(name = "rating")
+    @Min(value = 1)
+    @Max(value = 5)
     private int rating;
 
     // getters and setters

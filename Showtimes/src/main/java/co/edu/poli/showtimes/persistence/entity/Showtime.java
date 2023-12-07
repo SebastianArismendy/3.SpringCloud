@@ -4,6 +4,7 @@ package co.edu.poli.showtimes.persistence.entity;
 import co.edu.poli.showtimes.model.Movie;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.Getter;
@@ -27,14 +28,10 @@ public class Showtime {
     private Date date;
 
     @ElementCollection
-    private List<Long> movieIds;
+    private List<Long> moviesList;
 
-  /*
-    @Valid
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "movie_id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private List<ShowTimeItem> movies;
-    */
+    @Transient
+    @Schema(hidden = true)
+    private List<Movie> movies;
 
 }

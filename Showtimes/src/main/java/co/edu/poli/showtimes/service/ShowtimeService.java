@@ -12,14 +12,15 @@ import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ShowtimeService {
 
 
-   // private final MovieClient movieClient;
-   //  private final CircuitBreakerFactory cbFactory;
+    private final MovieClient movieClient;
+    private final CircuitBreakerFactory cbFactory;
 
     @Autowired
     private ShowtimeRepository showtimeRepository;
@@ -29,12 +30,37 @@ public class ShowtimeService {
     }
 
     public Showtime createShowtime(Showtime showtime) {
+
+        if (showtime.getDate() == null) {
+            throw new IllegalArgumentException("El campo 'date' no puede ser null");
+        }
+
         return showtimeRepository.save(showtime);
     }
 
     public Showtime getShowtimeById(Long id) {
-        return showtimeRepository.findById(id).orElse(null);
+
+        Showtime showtime =  showtimeRepository.findById(id).orElse(null);
+        ModelMapper modelMapper = new ModelMapper();
+        List<Movie> movies = showtime.getMoviesList().stream()
+                .map(showtimeMovie -> {
+                    Movie movie;
+                    movie = findByIDMovie(modelMapper,showtimeMovie);
+                    return movie;
+                }).collect(Collectors.toList());
+
+        showtime.setMovies(movies);
+
+
+        return showtime;
+
     }
+
+
+    public List<Showtime> hasShowtimes(List<Long> movieList) {
+        return showtimeRepository.findByMoviesListIn(movieList);
+    }
+
 
     public Showtime updateShowtime(Long id, Showtime showtime) {
         // Implementar la lógica de actualización según tus necesidades
@@ -49,13 +75,10 @@ public class ShowtimeService {
         return null;
     }
 
-
-    /*
-    public Movie findByMovie(ModelMapper modelMapper, Long movieId){
+    public Movie findByIDMovie(ModelMapper modelMapper, Long movieId){
         return cbFactory.create("findByIDMovie")
-                .run(()->modelMapper.map(movieClient.findByID(movieId).getData(),Movie.class),
+                .run(()->modelMapper.map(movieClient.findByID(movieId), Movie.class),
                         e-> new Movie() );
     }
-    */
 
 }

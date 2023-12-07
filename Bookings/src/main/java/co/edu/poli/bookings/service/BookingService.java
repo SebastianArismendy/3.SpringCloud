@@ -43,7 +43,7 @@ public class BookingService {
         Booking booking =  bookingRepository.findById(id).orElse(null);
         ModelMapper modelMapper = new ModelMapper();
 
-        booking.setUser(findByIDUser(modelMapper,booking.getUserid()));
+        booking.setUser(findByIDUser(modelMapper,booking.getUsuario()));
         booking.setShowtime(findByIDShowtime(modelMapper,booking.getShowtimeid()));
 
 
@@ -56,18 +56,31 @@ public class BookingService {
 
        booking.setMovies(movies);
 
+
         return booking;
     }
+
+    public List<Booking> getBookingByUserId(Long userId) {
+        return bookingRepository.findByUsuario(userId);
+    }
+
+    public Boolean hasBooking(Long userId) {
+        List<Booking> booking =  bookingRepository.findByUsuario(userId);
+        if(booking.isEmpty()){
+            return false;
+        }else{
+            return true;
+        }
+
+    }
+
+
 
     public void deleteBooking(Long id) {
         bookingRepository.deleteById(id);
     }
 
-    /*
-    public List<Booking> getBookingsByUserId(Long userId) {
-        return bookingRepository.findByUserid(userId);
-    }
-     */
+
     public User findByIDUser(ModelMapper modelMapper, Long userId){
         return cbFactory.create("findByIDUser")
                 .run(()->modelMapper.map(userClient.findByID(userId),User.class),

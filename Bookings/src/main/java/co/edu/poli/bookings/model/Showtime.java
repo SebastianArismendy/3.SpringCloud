@@ -8,5 +8,5 @@ import java.util.List;
 public class Showtime {
     private Long id;
     private Date date;
-    private List<Long> movieIds;
+    private List<Long> moviesList;
 }

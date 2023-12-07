@@ -5,6 +5,7 @@ import co.edu.poli.users.persistence.entity.User;
 import co.edu.poli.users.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +31,7 @@ public class UserController {
     }
 
     @PostMapping
-    @Validated
-    public User createUser(@RequestBody @Valid User user) {
+    public User createUser(@Valid @RequestBody  User user) {
         return userService.createUser(user);
     }
 

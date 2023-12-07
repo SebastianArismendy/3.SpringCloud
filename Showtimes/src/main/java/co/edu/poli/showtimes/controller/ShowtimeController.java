@@ -34,7 +34,7 @@ public class ShowtimeController {
     }
 
     @PutMapping("/{id}")
-    public Showtime updateShowtime(@PathVariable Long id, @RequestBody @Valid Showtime showtime) {
+    public Showtime updateShowtime(@Valid @PathVariable Long id, @RequestBody  Showtime showtime) {
         return showtimeService.updateShowtime(id, showtime);
     }
 

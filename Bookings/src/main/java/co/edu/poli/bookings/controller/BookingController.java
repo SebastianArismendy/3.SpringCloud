@@ -4,6 +4,7 @@ package co.edu.poli.bookings.controller;
 
 import co.edu.poli.bookings.persistence.entity.Booking;
 import co.edu.poli.bookings.service.BookingService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class BookingController {
     }
 
     @PostMapping
-    public Booking createBooking(@RequestBody @Validated Booking booking) {
+    public Booking createBooking(@Valid @RequestBody  Booking booking) {
         return bookingService.createBooking(booking);
     }
 
@@ -38,10 +39,15 @@ public class BookingController {
         bookingService.deleteBooking(id);
     }
 
-    /*
-    @GetMapping("/user/{userId}")
-    public List<Booking> getBookingsByUserId(@PathVariable Long userId) {
-        return bookingService.getBookingsByUserId(userId);
+    @GetMapping("/user/{id}")
+    public List<Booking> getBookingByUserId(@PathVariable Long id) {
+        return bookingService.getBookingByUserId(id);
     }
-    */
+
+
+    @GetMapping("/user/valid/{id}")
+    public Boolean hasBooking(@PathVariable Long id) {
+        return bookingService.hasBooking(id);
+    }
+
 }

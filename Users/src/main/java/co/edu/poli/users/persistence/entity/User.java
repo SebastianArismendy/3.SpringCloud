@@ -4,6 +4,7 @@ package co.edu.poli.users.persistence.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,16 +18,19 @@ import java.util.Objects;
 public class User {
 
     @Id
+    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @NotEmpty(message = "El nombre no puede  estar en blanco")
+
     @Column(name = "name")
+    @NotBlank
     private String name;
 
-    @NotEmpty(message = "El apellido no puede  estar en blanco")
+
     @Column(name = "lastname")
+    @NotBlank
     private String lastname;
 
     // toString, hashCode, equals, etc.

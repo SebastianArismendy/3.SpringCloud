@@ -26,12 +26,12 @@ public class Booking {
     private Long id;
 
     @NotNull
-    private Long userid;
+    private Long usuario;
 
     @NotNull
     private Long showtimeid;
 
-    @NotNull
+
     @ElementCollection
     private List<Long> moviesList;
 
